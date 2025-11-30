@@ -9,12 +9,12 @@
 <body>
   <script type="module">
     import GameEngine from './engine/GameEngine.js';
-    import sampleCartridge from './cartridges/cartridge.js';
+    import sampleCartridge from './cartridges/stack.js';
 
     const engine = new GameEngine({
       parent: document.body,
-      width: 800,
-      height: 600,
+      width: 1000,
+      height: 800,
       cartridge: sampleCartridge
     });
 

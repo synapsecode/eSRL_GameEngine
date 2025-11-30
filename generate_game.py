@@ -2,8 +2,8 @@ import subprocess
 import sys
 from dotenv import load_dotenv
 import os
-import requests
-import json
+
+from utils import generate_response, start_http_server
 
 load_dotenv()
 
@@ -11,86 +11,20 @@ TEXT2GAME_KEY = os.environ.get('TEXT2GAME_KEY')
 GAME_CARTRIDGE_CREATOR = os.environ.get('GAME_CARTRIDGE_CREATOR')
 INSTRUCTION_GEN = os.environ.get('INSTRUCTION_GEN')
 
-AI_URL = "https://ai-proto.crezam.com/v1"
-
-
-def start_http_server( port=8000):
-    # Start server in the current script directory
-    directory = './gamex'
-
-    print(f"Starting HTTP server in: {directory} (port {port})")
-
-    process = subprocess.Popen([
-        sys.executable,        # same python that runs this script
-        "-m", "http.server",
-        str(port)
-    ], cwd=directory)
-
-    return process
-
-# -----------------------------
-# REQUEST WRAPPER
-# -----------------------------
-def generate_response(payload, api_key):
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json"
-    }
-
-    body = {
-        "inputs": payload,
-        "response_mode": "blocking",
-        "user": "eSRL"
-    }
-
-    try:
-        resp = requests.post(
-            f"{AI_URL}/completion-messages",
-            headers=headers,
-            json=body,
-        )
-
-        # If server returned non-200, print body
-        if not resp.ok:
-            print("\n❌ API ERROR:", resp.status_code)
-            print(resp.text)
-            return None
-
-        # Try parsing JSON safely
-        try:
-            data = resp.json()
-        except:
-            print("\n❌ NON-JSON RESPONSE:")
-            print(resp.text)
-            return None
-
-        # Expected structure: {"answer": "..."}
-        answer = data.get("answer")
-
-        if not answer or not isinstance(answer, str):
-            print("\n❌ Missing 'answer' in response")
-            print(data)
-            return None
-
-        return answer.strip()
-
-    except Exception as e:
-        print("\n❌ REQUEST FAILED:", str(e))
-        return None
-
-
 # -----------------------------
 # CLEANUP CARTRIDGE FUNCTION
 # -----------------------------
 def cleanup_cartridge(text):
-    if not isinstance(text, str):
-        return ""
+    return text
+    # print("DXXX ===> ", text)
+    # if not isinstance(text, str):
+    #     return ""
 
-    parts = text.split("```")
-    if len(parts) < 3:
-        return ""
+    # parts = text.split("```")
+    # if len(parts) < 3:
+    #     return ""
 
-    return parts[1].strip()
+    # return parts[1].strip()
 
 
 # -----------------------------
@@ -113,7 +47,7 @@ if not game_design:
     print("❌ STEP 1 FAILED — EXITING")
     exit()
 
-
+print(game_design)
 # ----------------------------------
 # STEP 2 — Generate Cartridge Code
 # ----------------------------------
@@ -123,11 +57,16 @@ cartridge_raw = generate_response(
     api_key=GAME_CARTRIDGE_CREATOR
 )
 
+
+print("C",cartridge_raw)
+
 if not cartridge_raw:
     print("❌ STEP 2 FAILED — EXITING")
     exit()
 
 cartridge_code = cleanup_cartridge(cartridge_raw).replace('javascript','')
+
+print("XC",cartridge_code)
 
 if not cartridge_code:
     print("❌ EMPTY CLEANED CARTRIDGE — EXITING")

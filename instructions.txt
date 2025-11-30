@@ -1,0 +1,106 @@
+HOW_TO_PLAY:
+**Game Title:** Hypotenuse Snap!
+
+**Objective of the Game:**
+- Your goal is to prove the Pythagorean theorem visually by snapping a moving yellow square along the hypotenuse of a right triangle so that its area matches the combined areas of the blue and green leg squares.
+
+---
+
+**Controls and Interactions:**
+- **TAP (Left Mouse Click or Space Bar):**
+  - Instantly "snaps" the yellow hypotenuse square to its current location along the hypotenuse.
+- **HOLD (Hold Mouse Button or Space Bar):**
+  - Moves the yellow square steadily forward along the hypotenuse.
+- **RELEASE (Let go of Mouse Button or Space Bar) [after holding]:**
+  - The square automatically slows and snaps to the nearest grid point for easier alignment.
+- **Restart After Failure:**
+  - Click anywhere to restart when the triangle deconstructs after a failed attempt.
+
+**Quick Reference:**
+- Use mouse or Space Bar for all actions.
+  - Hold to move, tap/release to snap.
+
+---
+
+**Rules and Mechanics:**
+
+1. **Visual Layout:**
+   - Each level starts with a right triangle in the center of a grid-background.
+   - The triangle’s **base (bottom side)** is blue, **altitude (vertical side)** is green, **hypotenuse (diagonal side)** is yellow.
+   - A blue square overlays the base; a green square overlays the altitude.
+   - The hypotenuse has a moving yellow square that you control. A faint, outlined version marks the "perfect" position.
+
+2. **Moving the Hypotenuse Square:**
+   - When the level begins, the yellow square starts at the hypotenuse's bottom vertex.
+   - **Hold/tap** to move the square forward; it animates at a set speed (faster each level).
+   - As you snap, the square’s color transitions from yellow to cyan, indicating a closer area match.
+   - You must stop (snap) the square at the exact area match (when square area on hypotenuse equals combined areas of leg squares).
+
+3. **Snapping Precision:**
+   - Upon release or tap, the game checks if the area of the hypotenuse square matches the sum of the blue and green squares within a small margin of error.
+   - The closer your timing, the more precise the snap.
+   - Snapping quickly after a level starts grants a “speed bonus”—special purple flash.
+
+4. **Feedback:**
+   - **Success:** Triangle edges and both leg squares pulse green; hypotenuse square turns cyan; right-angle cyan dot glows. Next triangle appears after a moment.
+   - **Failure:** Triangle flashes red and quickly breaks apart; a "snap" sound plays. You must click to restart.
+
+5. **Progression:**
+   - Each successful snap increases the level, speeds up the hypotenuse square's movement, and introduces new triangle shapes with varied side lengths, requiring greater precision.
+
+6. **Game Over:**
+   - If you snap with incorrect area alignment, instant failure occurs (triangle and square flash red, triangle deconstructs).
+   - Click to restart from level 1.
+
+---
+
+**Win/Loss Conditions:**
+
+- **Win (Level Up):**
+  - Snap the hypotenuse square so its area matches the sum of the blue and green squares (leg squares) within allowed precision.
+  - Receive color and sound feedback, and proceed to a new triangle at a higher speed.
+
+- **Loss (Game Over):**
+  - Snap at the wrong spot (areas not matched—too early/late).
+  - Triangle flashes red, breaks down; game prompts to restart.
+
+---
+
+**Special Features & Tips:**
+
+- **Speed Bonus:** Snap very quickly (within ~600ms of the level start) for a purple flash and extra feedback.
+- **Color Cues:** Watch for the yellow-to-cyan transition and pulsing green squares/edges for success.
+- **Grid Assistance:** Upon release from a hold, the square slows and snaps to grid for easier alignment—use this to your advantage.
+- **Glowing Dot:** The cyan dot at the right angle glows on a successful snap; it's a visual indicator of mastery.
+- **Difficulty Ramps:** Every success increases the movement speed and triangle sizes—don’t rush unless you’re sure!
+- **Educational Note:** Every successful snap visually "proves" the Pythagorean theorem—you're matching the sum of the areas (a² + b² = c²) with your timing.
+
+---
+
+**Summary Steps:**
+1. At each level, observe the triangle and the squares.
+2. Hold mouse or Space Bar to move the hypotenuse square forward.
+3. Release or tap to snap to your chosen spot.
+4. Try to align so the hypotenuse square’s area matches the combined areas of the blue and green squares.
+5. Watch the color and animation feedback to confirm your match.
+6. Level up after success; restart after failure.
+
+Enjoy visualizing and mastering the Pythagorean theorem!
+
+---
+
+**If you’re new:** Start slow, watch the color changes, and rely on the grid snap for precise alignment!
+
+---
+
+**Win:** Correct snap = level up, faster triangles, increased challenge!
+**Lose:** Incorrect snap = triangle collapse, click to restart.
+
+---
+
+**Controls Recap:**
+- Mouse Click / Space: Tap to snap instantly; Hold to move; Release slows and grid-snaps the square.
+
+Good luck snapping the perfect hypotenuse!
+
+---
