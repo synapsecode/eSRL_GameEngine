@@ -1,9 +1,15 @@
 import subprocess
 import sys
+from dotenv import load_dotenv
 import requests
 import json
+import os
 
-AI_URL = "https://ai-proto.crezam.com/v1"
+load_dotenv()
+
+GEMINI_API_KEY=os.environ.get('GEMINI_API_KEY')
+OPENAI_KEY=os.environ.get('OPENAI_KEY')
+
 
 def start_http_server( port=8000):
     # Start server in the current script directory
@@ -19,49 +25,104 @@ def start_http_server( port=8000):
 
     return process
 
-def generate_response(payload, api_key):
+def generate_response_gemini(payload, api_key):
     headers = {
-        "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
     }
 
     body = {
-        "inputs": payload,
-        "response_mode": "blocking",
-        "user": "eSRL"
+        "contents": [
+            {"parts": [{"text": payload}]}
+        ]
     }
+
+    MODEL="gemini-2.0-flash"
+    GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
 
     try:
         resp = requests.post(
-            f"{AI_URL}/completion-messages",
+            f"{GEMINI_URL}?key={api_key}",
             headers=headers,
-            json=body,
+            json=body
         )
 
-        # If server returned non-200, print body
         if not resp.ok:
             print("\n❌ API ERROR:", resp.status_code)
             print(resp.text)
             return None
 
-        # Try parsing JSON safely
+        data = resp.json()
+
+        # Navigate Gemini structure safely
         try:
-            data = resp.json()
-        except:
-            print("\n❌ NON-JSON RESPONSE:")
-            print(resp.text)
-            return None
-
-        # Expected structure: {"answer": "..."}
-        answer = data.get("answer")
-
-        if not answer or not isinstance(answer, str):
-            print("\n❌ Missing 'answer' in response")
+            answer = data["candidates"][0]["content"]["parts"][0]["text"]
+        except Exception:
+            print("\n❌ Unexpected response format:")
             print(data)
             return None
 
         return answer.strip()
 
     except Exception as e:
+        print("\n❌ Request failed:", str(e))
+        return None
+
+    except Exception as e:
         print("\n❌ REQUEST FAILED:", str(e))
         return None
+
+def generate_response_chatgpt(payload, api_key):
+    url = "https://api.openai.com/v1/chat/completions"
+
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {api_key}"
+    }
+
+    body = {
+        "model": "gpt-5.1",   # Change to whatever model you want
+        "messages": [
+            {"role": "user", "content": payload}
+        ]
+    }
+
+    try:
+        resp = requests.post(url, headers=headers, json=body)
+
+        if not resp.ok:
+            print("\n❌ API ERROR:", resp.status_code)
+            print(resp.text)
+            return None
+
+        data = resp.json()
+
+        try:
+            answer = data["choices"][0]["message"]["content"]
+        except Exception:
+            print("\n❌ Unexpected response format:")
+            print(data)
+            return None
+
+        return answer.strip()
+
+    except Exception as e:
+        print("\n❌ Request failed:", str(e))
+        return None
+
+def generate_response(content):
+    # return generate_response_gemini(content, GEMINI_API_KEY)
+    return generate_response_chatgpt(content, OPENAI_KEY)
+
+def game_des_gen_call(content):
+    with open('gamedes.txt', 'r') as f:
+        sysprompt = f.read()
+    return generate_response(f"{sysprompt}\n\nContent:{content}")
+
+def cartridge_gen(content):
+    with open('cartridge_gen.txt', 'r') as f:
+        sysprompt = f.read()
+    return generate_response(f"{sysprompt}\n\nContent:{content}")
+
+
+if __name__ == '__main__':
+    start_http_server()
